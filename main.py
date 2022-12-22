@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime
 import calendar
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
 import seaborn as sns
 import warnings
 
@@ -23,6 +24,31 @@ def get_week_days_statistics():
         print(counts.std())
 
 
+def calculate_recency(x):
+    return (datetime.now().date() - x.date()).days
+
+
+def create_rfm_dataset(data):
+    rfm_df = pd.DataFrame()
+
+    # R
+
+    rfm_df['last_purchase_date'] = data['date'].groupby(data['user_id']).aggregate('max')
+    rfm_df['recency'] = rfm_df['last_purchase_date'].apply(calculate_recency)
+
+    # F
+    rfm_df['frequency'] = data['order_id'].groupby(data['user_id']).aggregate('count')
+
+    # M
+    rfm_df['monetary'] = data['total_purchase'].groupby(data['user_id']).aggregate('sum')
+
+    return rfm_df
+
+
+def apply_kmeans(df):
+    scaler = MinMaxScaler()
+    scaler.fit(df)
+    scaler.transform(df)
 
 def find_outliers_IQR(df):
     q1 = df.quantile(0.25)
@@ -88,6 +114,7 @@ plt.show()
 
 
 
+
 # Task 1
 get_week_days_statistics()
 
@@ -107,3 +134,7 @@ plt.ylabel('Histogram of Demand')
 plt.xlabel('Demand')
 plt.legend()
 plt.show()
+
+# Task 3
+rfm_df = create_rfm_dataset(data)
+apply_kmeans(rfm_df)
