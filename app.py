@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.cluster import KMeans
 from datetime import datetime
 import pandas as pd
 import calendar
 import matplotlib.pyplot as plt
+import numpy as np
 
-
-app = Flask(__name__)
-
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 def calculate_recency(x):
     return (datetime.now().date() - x.date()).days
@@ -29,11 +29,30 @@ def create_rfm_dataset(data):
     return rfm_df
 
 
-def apply_kmeans(df):
+def apply_kmeans(df, k):
     # scaler = MinMaxScaler()
     # scaler.fit(df)
     # scaler.transform(df)
-    ...
+    # kmeans = KMeans(n_clusters=2)
+    # kmeans.fit(df.drop('Private', axis=1))
+
+    scaler = MinMaxScaler()
+    df[['scaled_recency', 'scaled_frequency', 'scaled_monetary']] = scaler.fit_transform(
+        df[['recency', 'frequency', 'monetary']])
+
+
+    df.drop('last_purchase_date', axis=1, inplace=True)
+
+    kmeans = KMeans(n_clusters=k)
+    # label = kmeans.fit_predict(df)
+    df['label'] = kmeans.fit_predict(df[['scaled_recency', 'scaled_frequency', 'scaled_monetary']])
+    u_labels = np.unique(df['label'])
+    for i in u_labels:
+        plt.scatter(df[df['label'] == i]['scaled_frequency'], df[df['label'] == i]['scaled_recency'], label=i,
+                    alpha=0.5, marker='o')
+    plt.legend()
+    plt.savefig('static/images/kmeans_result.jpeg')
+
 
 
 def get_week_day(x):
@@ -101,11 +120,20 @@ def index():
     k = 0
     if request.method == "POST":
         k = request.form.get('value_k')
+        rfm_df = create_rfm_dataset(data)
+        print(k)
 
-    rfm_df = create_rfm_dataset(data)
-    apply_kmeans(rfm_df)
-    return render_template('main_page.html', user_image=img, tsk2_img=task2_image, tbl=tsk1, n_k=k)
 
+    # apply_kmeans(rfm_df, k)
+
+    return render_template('text.html', user_image=img, tsk2_img=task2_image, tbl=tsk1, n_k=k)
+
+
+@app.route("/forward/", methods=['POST'])
+def move_forward():
+    #Moving forward code
+    forward_message = "Moving Forward..."
+    return render_template('text.html')
 
 if __name__ == '__main__':
     app.run()

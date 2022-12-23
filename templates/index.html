@@ -1,16 +1,96 @@
-{% extends 'base.html' %}
 
-{% block content %}
-    <h1>{% block title %} Messages {% endblock %}</h1>
-    {% for message in messages %}
-        <div class='message'>
-            <h3>{{ message['title'] }}</h3>
-            <p>{{ message['content'] }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href='/static/css/normalize.css' />
+	<link rel="stylesheet" href='/static/css/skeleton.css' />
+
+<style>
+	.responsive {
+	  width: 100%;
+	  height: auto;
+	}
+</style>
+
+</head>
+<body class="code-snippets-visible">
+<!-- .container is main centered wrapper -->
+<div class="container">
+
+  <!-- columns should be the immediate child of a .row -->
+  <div class="row">
+    <div class="six columns">
+		<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1d4pPYRP9TLdERtZQLsqGTr4_lr0Mdk4Y_73Jl6AM&s" class="responsive"/>
+	</div>
+    <div class="six columns">
+		<table class="u-full-width">
+        <tr>
+			<th>روز هفته</th>
+			<th>میانگین تقاضای روزانه</th>
+			<th>انحراف معیار تقاضای روزانه</th>
+      </tr>
+      {%for row in tbl%}
+         <tr>
+            {%for col in row%}
+              <td>{{col}}</td>
+            {%endfor%}
+         </tr>
+      {%endfor%}
+    </table>
+
+	</div>
+  </div>
+  
+  <br/>
+  
+    <div class="row">
+	
+	<div class="twelve columns">
+		<div class="six columns">
+			<form method="post" action="{{ url_for('index') }}">
+			<label for="value_k">K:</label>
+			<input type="text" id="value_k" name="value_k" placeholder="Enter k..." onClick="writeOut()">
+<!--			<button type="submit">Submit</button>-->
+			</form>
+		</div>
+	</div>
+	
+	<div class="twelve columns">
+		
+
+		<div class="six columns">
+			<table class="u-full-width">
+        <tr>
+			<th>گروه مشتریان</th>
+			<th>Avg. R</th>
+			<th>Avg. F</th>
+			<th>Avg. M</th>
+      </tr>
+      {%for row in tbl%}
+         <tr>
+            {%for col in row%}
+              <td>{{col}}</td>
+            {%endfor%}
+         </tr>
+      {%endfor%}
+    </table>
+		</div>
+
+		<div class="six columns">
+
+			<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1d4pPYRP9TLdERtZQLsqGTr4_lr0Mdk4Y_73Jl6AM&s" class="responsive"/>
+		</div>
+	  </div>
+  	</div>
+  
+  
 
 
-        </div>
 
+</div>
 
-
-    {% endfor %}
-{% endblock %}
+</body>
+</html>
