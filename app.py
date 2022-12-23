@@ -126,7 +126,7 @@ def index():
 
     # apply_kmeans(rfm_df, k)
 
-    return render_template('text.html', user_image=img, tsk2_img=task2_image, tbl=tsk1, n_k=k)
+    return render_template('index.html', user_image=img, tsk2_img=task2_image, tbl=tsk1, n_k=k)
 
 
 @app.route("/forward/", methods=['POST'])
