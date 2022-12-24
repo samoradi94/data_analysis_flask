@@ -24,3 +24,12 @@ variables to have them in a same range. This help the algorithm to have a faster
 ** To get insight, I've checked data and had some visualizations(in main.py) but the main app does not include them.
 
 ** put sample_data.csv in the project directory
+
+#KMEANS
+Optimized k is sent by user, so we don't have any method to find the best one.
+All numerical values are appropriate for k except 0.
+
+
+
+web app link:
+https://saeideh.pythonanywhere.com/
