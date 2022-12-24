@@ -50,11 +50,10 @@
 	
 	<div class="twelve columns">
 		<div class="six columns">
-
-		<form method="post" action="{{ url_for('index') }}">
-			<input type="text" id="text" name="text" placeholder="Enter k...">
-			<button type="submit">Submit</button>
-		</form>
+			<form method="post" action="{{ url_for('index') }}">
+				<input type="text" id="text" name="text" placeholder="Enter k...">
+				<button type="submit">Submit</button>
+			</form>
 
 		</div>
 	</div>
@@ -63,12 +62,26 @@
 		
 
 		<div class="six columns">
-			<h3>Enter k to show the results</h3>
+			<table class="u-full-width">
+        <tr>
+			<th>گروه مشتریان</th>
+			<th>Avg. R</th>
+			<th>Avg. F</th>
+			<th>Avg. M</th>
+      </tr>
+      {%for row in cluster_centers%}
+         <tr>
+            {%for col in row%}
+              <td>{{col}}</td>
+            {%endfor%}
+         </tr>
+      {%endfor%}
+    </table>
 		</div>
 
 		<div class="six columns">
 
-			<h3>Enter k to show the results</h3>
+			<img src={{image2}} class="responsive"/>
 		</div>
 	  </div>
   	</div>
