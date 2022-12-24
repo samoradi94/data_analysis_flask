@@ -117,6 +117,9 @@ def index():
     # remove rows with missing values
     data.dropna(axis=0, inplace=True)
 
+    if not os.path.exists('static/images'):
+        os.mkdir('static/images')
+
     # Task 1
     data['week_day'] = data['date'].apply(get_week_day)
     task_1 = get_week_days_statistics(data)

@@ -22,3 +22,5 @@ Since we use Kmeans algorithm for clustering and this is an distance based algor
 variables to have them in a same range. This help the algorithm to have a faster convergence and also more reliable results.
 
 ** To get insight, I've checked data and had some visualizations(in main.py) but the main app does not include them.
+
+** put sample_data.csv in the project directory
