@@ -12,7 +12,7 @@ import os
 logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
-
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 def calculate_recency(x):
     return (datetime.now().date() - x.date()).days
@@ -57,7 +57,20 @@ def apply_kmeans(df, k):
         plt.scatter(df[df['label'] == i]['scaled_frequency'], df[df['label'] == i]['scaled_recency'], label=i,
                     alpha=0.5, marker='o')
     plt.legend()
+    plt.xlabel('freq')
+    plt.ylabel('recency')
 
+    from io import BytesIO
+    import base64
+    from matplotlib.figure import Figure
+    # fig = Figure()
+    # ax = fig.subplots()
+    # for i in u_labels:
+    #     ax.scatter(df[df['label'] == i]['scaled_frequency'], df[df['label'] == i]['scaled_recency'], label=i,
+    #                 alpha=0.5, marker='o')
+    # buf = BytesIO()
+    # image_data1 = base64.b64encode(buf.getbuffer()).decode("ascii")
+    # fig.savefig(buf, format="jpeg")
     if os.path.isfile('static/images/kmeans_result.jpeg'):
         os.remove('static/images/kmeans_result.jpeg')
     plt.savefig('static/images/kmeans_result.jpeg')
@@ -99,15 +112,15 @@ def get_week_days_statistics(data):
 
 def get_tsak_2_result(data):
     week_day_data = data.query(
-        'week_day != "Thursday" and week_day != "Friday"')  # contains ['Monday' 'Tuesday' 'Wednesday' 'Saturday' 'Sunday']
-    holiday_data = data.query('week_day == "Thursday" or week_day == "Friday"')  # contains ['Thursday' 'Friday']
+        f'week_day != {4} and week_day != {5}')  # contains ['Monday' 'Tuesday' 'Wednesday' 'Saturday' 'Sunday']
+    holiday_data = data.query(f'week_day == {4} or week_day == {5}')  # contains ['Thursday' 'Friday']
 
     number_of_purch_weekday = week_day_data.groupby('date').aggregate('count')
     number_of_purch_weekend = holiday_data.groupby('date').aggregate('count')
 
-    plt.hist(number_of_purch_weekday['order_id'], bins=70, facecolor='#B4CDED', edgecolor='#0D1821', alpha=0.7,
+    plt.hist(number_of_purch_weekday['order_id'], bins=70, facecolor='#EB455F', edgecolor='#0D1821', alpha=0.7,
              label='workingDays')
-    plt.hist(number_of_purch_weekend['order_id'], bins=30, facecolor='#8C8FE3', edgecolor='#0D1821', alpha=0.7,
+    plt.hist(number_of_purch_weekend['order_id'], bins=50, facecolor='#FFFFD0', edgecolor='#0D1821', alpha=0.7,
              label='weekend')
     plt.ylabel('Histogram of Demand')
     plt.xlabel('Demand')
@@ -148,7 +161,7 @@ def create_cluster_centers_list(cl):
     all_group = []
     for i in range(0, len(cl)):
         group_list = []
-        group_list.append(i + 1)
+        group_list.append(f' خوشه {i + 1}')
         for j in range(0, 3):
             group_list.append(round(cl[i][j], 3))
 
@@ -189,7 +202,7 @@ def index():
         centers = create_cluster_centers_list(cluster_centers)
         # logging.error(f'type: {type(cluster_c)}')
         kmean_image = 'static/images/kmeans_result.jpeg'
-        return render_template('index2.html', image1 = image1, tbl=tsk1, k=k, cluster_centers=centers, image2 = kmean_image)
+        return render_template('response.html', image1 = image1, tbl=tsk1, k=k, cluster_centers=centers, image2 = kmean_image)
     else:
         return render_template('index.html', image1=image1, tsk2_img=task2_image, tbl=tsk1, k=0)
     #     # index()

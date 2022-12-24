@@ -52,7 +52,7 @@
 		<div class="six columns">
 
 		<form method="post" action="{{ url_for('index') }}">
-			<input type="text" id="text" name="text" placeholder="Enter k...">
+			<input type="number" id="text" name="text" min="1" placeholder="Enter k...">
 			<button type="submit">Submit</button>
 		</form>
 
@@ -78,7 +78,7 @@
 
 
 </div>
-<h1>{{k}}</h1>
+
 
 </body>
 </html>
