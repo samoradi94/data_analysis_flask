@@ -31,7 +31,7 @@ variables to have them in a same range. This help the algorithm to have a faster
 
 ** put sample_data.csv in the project directory
 
-#KMEANS
+# KMEANS
 Optimized k is sent by user, so we don't have any method to find the best one.
 All numerical values are appropriate for k except 0.
 
