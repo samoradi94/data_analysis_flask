@@ -19,9 +19,18 @@ def get_week_days_statistics():
         specific_day_data = data[data['week_day'] == day][['date', 'total_purchase']]
         counts = specific_day_data.groupby('date').count()
 
-        print(day)
+        print('---------------------------------')
+        print(specific_day_data[specific_day_data['date'] == '2018-01-06'].shape)
+        print(counts)
+
+        # print(counts['total_purchase'])
+        # print(day)
         print(counts.mean())
-        print(counts.std())
+        print(f'std {counts.std()}')
+        # print(counts.min())
+        # print(counts.max())
+        # print(counts._values)
+        exit()
 
 
 def calculate_recency(x):
@@ -86,15 +95,18 @@ mis_val_percent = 100 * data.isnull().sum() / len(data)
 
 data.dropna(axis=0, inplace=True)
 
+print(data[data['total_purchase']<0])
+data = data[data['total_purchase'] >=0]
+print(data[data['total_purchase']<0])
 
 # visualization
 plt.hist(data['total_purchase'], bins = 50)
-plt.show()
+# plt.show()
 
 # outlier detection
 
 sns.boxplot(data['total_purchase'])
-plt.show()
+# plt.show()
 
 # investigate an outlier point
 # print(data[data['total_purchase'] == 100000000])
@@ -117,6 +129,7 @@ plt.show()
 
 # Task 1
 get_week_days_statistics()
+exit()
 
 # Task 2
 week_day_data = data.query(

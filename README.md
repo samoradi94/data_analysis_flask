@@ -7,6 +7,12 @@ Duplicates
 ----------------
 No duplicate rows was found
 
+Check Range
+----------------
+We have orders with negative values. We remove them from dataset considering this fact that we don't have negative purchase value.
+Although it might be happen in the case of refund(!!), but we have only 7 rows out of 261,749 orders with negative values and this make
+the probability of some mistakes in our system stronger! To be sure we can check with an expert...
+
 Outliers
 ----------------
 We have an extreme point which obviously is detected as an outlier.

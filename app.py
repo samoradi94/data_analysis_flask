@@ -111,11 +111,16 @@ def create_cluster_centers_list(cl):
 def index():
 
     # get data
-    date_parse = lambda x: datetime.strptime(x, '%m/%d/%Y')
-    data = pd.read_csv('sample_data.csv', parse_dates=['date'], date_parser=date_parse)
+    # date_parse = lambda x: datetime.strptime(x, '%m/%d/%Y')
+    # data = pd.read_csv('sample_data.csv', parse_dates=['date'], date_parser=date_parse)
+    data = pd.read_csv('sample_data.csv')
+    data['date'] = pd.to_datetime(data['date'], format = '%m/%d/%Y')
 
     # remove rows with missing values
     data.dropna(axis=0, inplace=True)
+
+    # remove rows with negative purchase value
+    data = data[data['total_purchase'] >= 0]
 
     if not os.path.exists('static/images'):
         os.mkdir('static/images')
